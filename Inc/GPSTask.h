@@ -1,12 +1,12 @@
 /*
- * VHFTask.h
+ * GPSTask.h
  *
- *  Created on: 13 mai 2020
+ *  Created on: 18 mai 2020
  *      Author: Simon GALAND
  */
 
-#ifndef TASKS_VHFTASK_H_
-#define TASKS_VHFTASK_H_
+#ifndef INC_GPSTASK_H_
+#define INC_GPSTASK_H_
 #include "stm32f1xx_hal.h"
 #include "cmsis_os.h"
 #include "string.h"
@@ -14,13 +14,14 @@
 #include "Constants.h"
 
 #define IDLE_TIME 25 //time between 2 frames in ticks number
-#define UART huart2	//VHF is on uart2
+#define UART huart1 //GPS is on uart 1
 
 //prototype
-void VHFTask(void* arguments);
+void GPSTask(void* arguments);
 
-void initVHFTask();
+void GPSTask();
 
 
 
-#endif /* TASKS_VHFTASK_H_ */
+
+#endif /* INC_GPSTASK_H_ */

@@ -9,6 +9,7 @@
 #define SHARED_H_
 
 extern osMessageQueueId_t mainNmeaQueueHandle;
+extern const osThreadAttr_t uartParserTask_attributes2;
 
 
 #endif /* SHARED_H_ */

@@ -17,14 +17,14 @@
 //Concerning DMA and uart receiving
 #define UART_DMA_BUFFER_SIZE 2048
 #define PARSER_MESSAGE_LIST_SIZE 8
-#define PARSER_MESSAGE_SIZE 64
+#define PARSER_MESSAGE_SIZE 90
 
 //Concerning peripheral
 UART_HandleTypeDef huart4;	//Wind instrument UART
 UART_HandleTypeDef huart5; //pc UART
 UART_HandleTypeDef huart1; //GPS UART
 UART_HandleTypeDef huart2; //VHF UART
-UART_HandleTypeDef huart3; //Pilote UART
+UART_HandleTypeDef huart3; //Pilot UART
 DMA_HandleTypeDef hdma_usart2_tx;
 DMA_HandleTypeDef hdma_usart2_rx;
 

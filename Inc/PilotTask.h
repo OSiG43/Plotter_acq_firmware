@@ -1,12 +1,13 @@
 /*
- * VHFTask.h
+ * PiloteTask.h
  *
- *  Created on: 13 mai 2020
+ *  Created on: 18 mai 2020
  *      Author: Simon GALAND
  */
 
-#ifndef TASKS_VHFTASK_H_
-#define TASKS_VHFTASK_H_
+#ifndef INC_PILOTETASK_H_
+#define INC_PILOTETASK_H_
+
 #include "stm32f1xx_hal.h"
 #include "cmsis_os.h"
 #include "string.h"
@@ -14,13 +15,14 @@
 #include "Constants.h"
 
 #define IDLE_TIME 25 //time between 2 frames in ticks number
-#define UART huart2	//VHF is on uart2
+#define UART huart3 //Pilot is on uart3
 
 //prototype
-void VHFTask(void* arguments);
+void PilotTask(void* arguments);
 
-void initVHFTask();
+void initPilotTask();
 
 
 
-#endif /* TASKS_VHFTASK_H_ */
+
+#endif /* INC_PILOTETASK_H_ */
