@@ -8,7 +8,7 @@ Utiliser sw4stm32
 Bug sur configuration du projet:  
   Pour contourner:  
       sauvegarder les fichiers ".project" et ".cproject"  
-      puis les remettre après modification via CubeMX  <\p>
+      puis les remettre après modification via CubeMX  <p\>
  
  Info:  
  Utilise CMSIS V2 avec Freertos.  
