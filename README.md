@@ -9,6 +9,8 @@ Bug sur configuration du projet:
   Pour contourner:  
       sauvegarder les fichiers ".project" et ".cproject"  
       puis les remettre après modification via CubeMX  <p\>
+  De plus:\
+  Il faut déplacer "cmsis_os.h" et "cmsis_os2.h" depuis "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_ROS_V2" vers "Drivers/CMSIS/Include"\
  
  Info:  
  Utilise CMSIS V2 avec Freertos.  
