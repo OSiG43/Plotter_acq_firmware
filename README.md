@@ -1,14 +1,16 @@
 # Plotter_acq_firmware
-SW4STM32 projet eclipse pour le firmware de Plotter_acq\
+SW4STM32 projet eclipse pour le firmware de Plotter_acq  
   
-Pour recompiler:\
+Pour recompiler:  
 Utiliser sw4stm32  
 
-<p>Pour changer les options de config avec CubeMX:  
+Pour changer les options de config avec CubeMX:  
 Bug sur configuration du projet:  
   Pour contourner:  
       sauvegarder les fichiers ".project" et ".cproject"  
-      puis les remettre après modification via CubeMX  <p\>
+      puis les remettre après modification via CubeMX   
+  De plus:  
+  Il faut déplacer "cmsis_os.h" et "cmsis_os2.h" depuis "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_ROS_V2" vers "Drivers/CMSIS/Include"  
  
  Info:  
  Utilise CMSIS V2 avec Freertos.  
