@@ -80,10 +80,7 @@ const osMessageQueueAttr_t mainNmeaQueue_attributes = {
 };
 
 //classic attribute for uartParser
-const osThreadAttr_t uartParserTask_attributes2 = {
-		.name = "UARTParserTask",
-		.priority = (osPriority_t) osPriorityNormal,
-		.stack_size = 128*4};
+
 
 /* USER CODE END PV */
 

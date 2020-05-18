@@ -16,8 +16,9 @@
 
 //Concerning DMA and uart receiving
 #define UART_DMA_BUFFER_SIZE 2048
-#define PARSER_MESSAGE_LIST_SIZE 8
 #define PARSER_MESSAGE_SIZE 90
+#define DEFAULT_UART_TASK_STACK_SIZE 128*4
+#define DEFAULT_UART_TASK_PRIORITY osPriorityNormal
 
 //Concerning peripheral
 UART_HandleTypeDef huart4;	//Wind instrument UART

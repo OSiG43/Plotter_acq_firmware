@@ -14,7 +14,6 @@
 #include "Constants.h"
 
 #define IDLE_TIME 25 //time between 2 frames in ticks number
-#define UART huart1 //GPS is on uart 1
 
 //prototype
 void GPSTask(void* arguments);

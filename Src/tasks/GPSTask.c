@@ -14,10 +14,14 @@
 static uint8_t gpsBuffer[UART_DMA_BUFFER_SIZE];
 static uint8_t gpsMsg[PARSER_MESSAGE_SIZE];
 static osThreadId_t uartParserTaskHandle;
+static const osThreadAttr_t uartParserTask_attributes2 = {
+		.name = "GPSTask",
+		.priority = (osPriority_t) DEFAULT_UART_TASK_PRIORITY,
+		.stack_size = DEFAULT_UART_TASK_STACK_SIZE};
 
 
 void initGPSTask(){
-	HAL_UART_Receive_DMA(&UART, gpsBuffer, UART_DMA_BUFFER_SIZE);
+	HAL_UART_Receive_DMA(&huart1, gpsBuffer, UART_DMA_BUFFER_SIZE);
 	uartParserTaskHandle = osThreadNew(GPSTask, gpsBuffer, &uartParserTask_attributes2);
 }
 
@@ -36,7 +40,7 @@ void GPSTask(void* arguments)
 		do
 		{
 			__disable_irq();
-			dma_tail = UART_DMA_BUFFER_SIZE - UART.hdmarx->Instance->CNDTR;
+			dma_tail = UART_DMA_BUFFER_SIZE - huart1.hdmarx->Instance->CNDTR;
 			__enable_irq();
 
 			if(dma_tail!=dma_head)
@@ -78,7 +82,7 @@ void GPSTask(void* arguments)
 				osMessageQueuePut(mainNmeaQueueHandle, &gpsMsg,0,0);
 
 			}
-		}while(dma_head!=(UART_DMA_BUFFER_SIZE- UART.hdmarx->Instance->CNDTR));
+		}while(dma_head!=(UART_DMA_BUFFER_SIZE- huart1.hdmarx->Instance->CNDTR));
 		osDelay(IDLE_TIME); // this should be the minimum time difference between each frame
 	}
 }

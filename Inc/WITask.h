@@ -15,7 +15,6 @@
 #include "Constants.h"
 
 #define IDLE_TIME 25 //time between 2 frames in ticks number
-#define UART huart4 //Wind instruments is on uart 4
 
 //prototype
 void WITask(void* arguments);

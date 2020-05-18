@@ -14,7 +14,6 @@
 #include "Constants.h"
 
 #define IDLE_TIME 25 //time between 2 frames in ticks number
-#define UART huart2	//VHF is on uart2
 
 //prototype
 void VHFTask(void* arguments);

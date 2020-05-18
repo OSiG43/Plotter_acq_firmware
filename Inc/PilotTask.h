@@ -15,7 +15,6 @@
 #include "Constants.h"
 
 #define IDLE_TIME 25 //time between 2 frames in ticks number
-#define UART huart3 //Pilot is on uart3
 
 //prototype
 void PilotTask(void* arguments);

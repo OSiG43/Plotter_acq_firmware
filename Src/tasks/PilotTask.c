@@ -14,6 +14,10 @@
 static uint8_t pilotBuffer[UART_DMA_BUFFER_SIZE];
 static uint8_t pilotMsg[PARSER_MESSAGE_SIZE];
 static osThreadId_t uartParserTaskHandle;
+static const osThreadAttr_t uartParserTask_attributes2 = {
+		.name = "PilotTask",
+		.priority = (osPriority_t) DEFAULT_UART_TASK_PRIORITY,
+		.stack_size = DEFAULT_UART_TASK_STACK_SIZE};
 
 
 void initPilotTask(){

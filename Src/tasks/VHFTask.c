@@ -14,7 +14,10 @@
 static uint8_t vhfBuffer[UART_DMA_BUFFER_SIZE];
 static uint8_t vhfMsg[PARSER_MESSAGE_SIZE];
 static osThreadId_t uartParserTaskHandle;
-
+static const osThreadAttr_t uartParserTask_attributes2 = {
+		.name = "VHFTask",
+		.priority = (osPriority_t) DEFAULT_UART_TASK_PRIORITY,
+		.stack_size = DEFAULT_UART_TASK_STACK_SIZE};
 
 void initVHFTask(){
 	HAL_UART_Receive_DMA(&huart2, vhfBuffer, UART_DMA_BUFFER_SIZE);
