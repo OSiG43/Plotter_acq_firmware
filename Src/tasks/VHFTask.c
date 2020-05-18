@@ -32,7 +32,7 @@ void VHFTask(void* arguments)
 	size_t cur_msg_sz = 0;
 	uint8_t found = 0;
 
-
+	printf("VHFTask Start !\r\n");
 	for(;;)
 	{
 

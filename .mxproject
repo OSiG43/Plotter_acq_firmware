@@ -1,7 +1,7 @@
 [PreviousGenFiles]
-HeaderPath=C:/Users/Lenovo X1/Desktop/Perso/Plotter_acq/plotter_acq_rtos/Inc
+HeaderPath=C:/Users/Lenovo X1/Desktop/Perso/Plotter_acq/plotter_acq_firmware/Inc
 HeaderFiles=FreeRTOSConfig.h;stm32f1xx_it.h;stm32f1xx_hal_conf.h;main.h;
-SourcePath=C:/Users/Lenovo X1/Desktop/Perso/Plotter_acq/plotter_acq_rtos/Src
+SourcePath=C:/Users/Lenovo X1/Desktop/Perso/Plotter_acq/plotter_acq_firmware/Src
 SourceFiles=freertos.c;stm32f1xx_it.c;stm32f1xx_hal_msp.c;stm32f1xx_hal_timebase_tim.c;main.c;
 
 [PreviousLibFiles]
