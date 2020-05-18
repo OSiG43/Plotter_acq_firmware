@@ -14,4 +14,10 @@ Bug sur configuration du projet:
  Utilise CMSIS V2 avec Freertos.
  Pour thread debugging sur eclispe, prendre plugin freertos nxp
  
- 
+Hardware info:
+  MCU:stm32F103RCT6
+  uart1: GPS UART
+  uart2: VHF UART
+  uart3: Pilote UART
+  uart4: Wind instrument UART
+  uart5: pc UART
