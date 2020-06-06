@@ -79,7 +79,18 @@ void GPSTask(void* arguments)
 				}
 
 				dma_head=dma_tail;
-				osMessageQueuePut(mainNmeaQueueHandle, &gpsMsg,0,0);
+
+
+				switch (osMessageQueuePut(mainNmeaQueueHandle, &gpsMsg,0,0)) {
+				case osErrorTimeout:
+					__asm("BKPT #0\n") ; // Break into the debugger
+					break;
+				case osErrorResource:
+					__asm("BKPT #0\n") ; // Break into the debugger
+					break;
+				default:
+					break;
+				}
 
 			}
 		}while(dma_head!=(UART_DMA_BUFFER_SIZE- huart1.hdmarx->Instance->CNDTR));

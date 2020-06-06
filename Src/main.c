@@ -118,7 +118,7 @@ int __io_putchar(int ch)
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+	vTraceEnable(TRC_START);
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -176,7 +176,7 @@ int main(void)
 
   /* Create the thread(s) */
   /* creation of defaultTask */
-  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+ // defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
 	/* add threads, ... */
@@ -540,7 +540,6 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 	//HAL_UART_Receive_IT(huart,rx_buff,10);
-	printf("ok\r\n");
 	__NOP();
 }
 /* USER CODE END 4 */
@@ -557,11 +556,19 @@ void StartDefaultTask(void *argument)
   /* USER CODE BEGIN 5 */
 	printf("Kernel initialized.\r\n");
 	uint8_t buff[PARSER_MESSAGE_SIZE]={0};
+	int i =0;
+	uint8_t letter=0;
 	/* Infinite loop */
 	for(;;)
 	{
 		if(osMessageQueueGet(mainNmeaQueueHandle,&buff,NULL,2)==osOK){
-			printf("%s",buff);
+			//printf("%s",buff);
+			for(i=0;i<PARSER_MESSAGE_SIZE;i++){
+				letter=buff[i];
+				if(letter=='\0')
+					break;
+				HAL_UART_Transmit(&huart5, (uint8_t *)&letter, 1, 100);
+			}
 		}
 
 		osDelay(25);

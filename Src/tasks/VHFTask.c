@@ -79,7 +79,16 @@ void VHFTask(void* arguments)
 				}
 
 				dma_head=dma_tail;
-				osMessageQueuePut(mainNmeaQueueHandle, &vhfMsg,0,0);
+				switch (osMessageQueuePut(mainNmeaQueueHandle, &vhfMsg,0,0)) {
+				case osErrorTimeout:
+					__asm("BKPT #0\n") ; // Break into the debugger
+					break;
+				case osErrorResource:
+					__asm("BKPT #0\n") ; // Break into the debugger
+					break;
+				default:
+					break;
+				}
 
 			}
 		}while(dma_head!=(UART_DMA_BUFFER_SIZE- huart2.hdmarx->Instance->CNDTR));
