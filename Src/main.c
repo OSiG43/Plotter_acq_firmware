@@ -176,15 +176,15 @@ int main(void)
 
   /* Create the thread(s) */
   /* creation of defaultTask */
- // defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
 	/* add threads, ... */
 
 	initVHFTask();
-	initGPSTask();
-	initWITask();
-	initPilotTask();
+//	initGPSTask();
+//	initWITask();
+//	initPilotTask();
 
   /* USER CODE END RTOS_THREADS */
 
@@ -555,23 +555,25 @@ void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN 5 */
 	printf("Kernel initialized.\r\n");
-	uint8_t buff[PARSER_MESSAGE_SIZE]={0};
+	uint8_t *buff;
+	struct NMEA_PAQUET paquet;
 	int i =0;
 	uint8_t letter=0;
 	/* Infinite loop */
 	for(;;)
 	{
-		if(osMessageQueueGet(mainNmeaQueueHandle,&buff,NULL,2)==osOK){
-			//printf("%s",buff);
-			for(i=0;i<PARSER_MESSAGE_SIZE;i++){
-				letter=buff[i];
-				if(letter=='\0')
-					break;
-				HAL_UART_Transmit(&huart5, (uint8_t *)&letter, 1, 100);
-			}
+		if(osMessageQueueGet(mainNmeaQueueHandle,&paquet,NULL,2)==osOK){
+			printf("%s",paquet.msg);
+			//vPortFree(buff);
+//			for(i=0;i<PARSER_MESSAGE_SIZE;i++){
+//				letter=buff[i];
+//				if(letter=='\0')
+//					break;
+//				HAL_UART_Transmit(&huart5, (uint8_t *)&letter, 1, 100);
+//			}
 		}
 
-		osDelay(25);
+		osDelay(2);
 	}
 
   /* USER CODE END 5 */ 

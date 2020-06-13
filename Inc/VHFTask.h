@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include "Constants.h"
 
-#define IDLE_TIME 25 //time between 2 frames in ticks number
+#define IDLE_TIME 200 //time between 2 frames in ticks number
 
 //prototype
 void VHFTask(void* arguments);
