@@ -555,8 +555,7 @@ void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN 5 */
 	printf("Kernel initialized.\r\n");
-	uint8_t *buff;
-	struct NMEA_PAQUET paquet;
+	NMEA_PAQUET paquet;
 	int i =0;
 	uint8_t letter=0;
 	/* Infinite loop */
@@ -564,16 +563,10 @@ void StartDefaultTask(void *argument)
 	{
 		if(osMessageQueueGet(mainNmeaQueueHandle,&paquet,NULL,2)==osOK){
 			printf("%s",paquet.msg);
-			//vPortFree(buff);
-//			for(i=0;i<PARSER_MESSAGE_SIZE;i++){
-//				letter=buff[i];
-//				if(letter=='\0')
-//					break;
-//				HAL_UART_Transmit(&huart5, (uint8_t *)&letter, 1, 100);
-//			}
+
 		}
 
-		osDelay(2);
+		osDelay(20);
 	}
 
   /* USER CODE END 5 */ 

@@ -17,9 +17,10 @@
 //Concerning DMA and uart receiving
 #define UART_DMA_BUFFER_SIZE 2048
 #define PARSER_MESSAGE_SIZE 90
-struct NMEA_PAQUET{                                // object data type
+typedef struct {                                // object data type
   uint8_t msg[PARSER_MESSAGE_SIZE];
-};
+  size_t len;
+}NMEA_PAQUET;
 
 #define DEFAULT_UART_TASK_STACK_SIZE 128*4
 #define DEFAULT_UART_TASK_PRIORITY osPriorityNormal
