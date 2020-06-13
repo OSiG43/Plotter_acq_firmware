@@ -29,6 +29,9 @@ void VHFTask(void* arguments)
 	size_t dma_head = 0, dma_tail = 0;
 	size_t cur_msg_sz = 0;
 	uint8_t found = 0;
+	NMEA_PAQUET vhfPaquet;
+	memset(vhfPaquet.msg,0,PARSER_MESSAGE_SIZE);
+
 	NMEA_PAQUET threadStartPaquet;
 	strcpy(threadStartPaquet.msg,"VHF Task Start\r\n");
 	osMessageQueuePut(mainNmeaQueueHandle, &threadStartPaquet,0,0); //put thread start msg in queue to be print in main thread
@@ -45,7 +48,7 @@ void VHFTask(void* arguments)
 
 			if(dma_tail!=dma_head)
 			{
-				NMEA_PAQUET vhfPaquet;
+
 				if(dma_head < dma_tail)
 				{
 					for(register size_t i=dma_head; i<dma_tail; i++)

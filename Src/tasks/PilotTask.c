@@ -12,7 +12,6 @@
 
 
 static uint8_t pilotBuffer[UART_DMA_BUFFER_SIZE];
-static uint8_t pilotMsg[PARSER_MESSAGE_SIZE];
 static osThreadId_t uartParserTaskHandle;
 static const osThreadAttr_t uartParserTask_attributes2 = {
 		.name = "PilotTask",
@@ -30,9 +29,12 @@ void PilotTask(void* arguments)
 	size_t dma_head = 0, dma_tail = 0;
 	size_t cur_msg_sz = 0;
 	uint8_t found = 0;
+	NMEA_PAQUET pilotPaquet;
+	memset(pilotPaquet.msg,0,PARSER_MESSAGE_SIZE);
 
-	const uint8_t* threadStartMsg="Pilot Task Start\r\n";
-	osMessageQueuePut(mainNmeaQueueHandle, threadStartMsg,0,0); //put thread start msg in queue to be print in main thread
+	NMEA_PAQUET threadStartPaquet;
+	strcpy(threadStartPaquet.msg,"Pilot Task Start\r\n");
+	osMessageQueuePut(mainNmeaQueueHandle, &threadStartPaquet,0,0); //put thread start msg in queue to be print in main thread
 
 	for(;;)
 	{
@@ -44,8 +46,7 @@ void PilotTask(void* arguments)
 			//printf("tail:%d | head:%d\r\n",dma_tail,dma_head);
 			if(dma_tail!=dma_head)
 			{
-				memset(pilotMsg,0,PARSER_MESSAGE_SIZE);
-				cur_msg_sz=0;
+
 				if(dma_head < dma_tail)
 				{
 					for(register size_t i=dma_head; i<dma_tail; i++)
@@ -53,7 +54,13 @@ void PilotTask(void* arguments)
 						found = (found == 0 && pilotBuffer[i] == '\r') ? 1
 								: (found == 1 && pilotBuffer[i] == '\n') ? 2
 										: 0;
-						pilotMsg[cur_msg_sz++]= pilotBuffer[i];
+						pilotPaquet.msg[cur_msg_sz++]= pilotBuffer[i];
+						if(found==2)
+						{
+							osMessageQueuePut(mainNmeaQueueHandle, &pilotPaquet,0,0);
+							memset(pilotPaquet.msg,0,PARSER_MESSAGE_SIZE);
+							cur_msg_sz=0;
+						}
 					}
 
 				}
@@ -64,7 +71,13 @@ void PilotTask(void* arguments)
 						found = (found == 0 && pilotBuffer[i] == '\r') ? 1
 								: (found == 1 && pilotBuffer[i] == '\n') ? 2
 										: 0;
-						pilotMsg[cur_msg_sz++]= pilotBuffer[i];
+						pilotPaquet.msg[cur_msg_sz++]= pilotBuffer[i];
+						if(found==2)
+						{
+							osMessageQueuePut(mainNmeaQueueHandle, &pilotPaquet,0,0);
+							memset(pilotPaquet.msg,0,PARSER_MESSAGE_SIZE);
+							cur_msg_sz=0;
+						}
 					}
 
 					for(register size_t i=0; i<dma_tail; i++)
@@ -72,13 +85,18 @@ void PilotTask(void* arguments)
 						found = (found == 0 && pilotBuffer[i] == '\r') ? 1
 								: (found == 1 && pilotBuffer[i] == '\n') ? 2
 										: 0;
-						pilotMsg[cur_msg_sz++]= pilotBuffer[i];
+						pilotPaquet.msg[cur_msg_sz++]= pilotBuffer[i];
+						if(found==2)
+						{
+							osMessageQueuePut(mainNmeaQueueHandle, &pilotPaquet,0,0);
+							memset(pilotPaquet.msg,0,PARSER_MESSAGE_SIZE);
+							cur_msg_sz=0;
+						}
 					}
 
 				}
 
 				dma_head=dma_tail;
-				osMessageQueuePut(mainNmeaQueueHandle, &pilotMsg,0,0);
 
 			}
 		}while(dma_head!=(UART_DMA_BUFFER_SIZE- huart3.hdmarx->Instance->CNDTR));

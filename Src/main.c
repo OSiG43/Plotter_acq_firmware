@@ -182,9 +182,9 @@ int main(void)
 	/* add threads, ... */
 
 	initVHFTask();
-//	initGPSTask();
-//	initWITask();
-//	initPilotTask();
+	initGPSTask();
+	initWITask();
+	initPilotTask();
 
   /* USER CODE END RTOS_THREADS */
 

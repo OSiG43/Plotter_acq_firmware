@@ -12,7 +12,6 @@
 
 
 static uint8_t gpsBuffer[UART_DMA_BUFFER_SIZE];
-static uint8_t gpsMsg[PARSER_MESSAGE_SIZE];
 static osThreadId_t uartParserTaskHandle;
 static const osThreadAttr_t uartParserTask_attributes2 = {
 		.name = "GPSTask",
@@ -30,9 +29,12 @@ void GPSTask(void* arguments)
 	size_t dma_head = 0, dma_tail = 0;
 	size_t cur_msg_sz = 0;
 	uint8_t found = 0;
+	NMEA_PAQUET gpsPaquet;
+	memset(gpsPaquet.msg,0,PARSER_MESSAGE_SIZE);
 
-	const uint8_t* threadStartMsg="GPS Task Start\r\n";
-	osMessageQueuePut(mainNmeaQueueHandle, threadStartMsg,0,0); //put thread start msg in queue to be print in main thread
+	NMEA_PAQUET threadStartPaquet;
+	strcpy(threadStartPaquet.msg,"GPS Task Start\r\n");
+	osMessageQueuePut(mainNmeaQueueHandle, &threadStartPaquet,0,0); //put thread start msg in queue to be print in main thread
 
 	for(;;)
 	{
@@ -45,8 +47,7 @@ void GPSTask(void* arguments)
 
 			if(dma_tail!=dma_head)
 			{
-				memset(gpsMsg,0,PARSER_MESSAGE_SIZE);
-				cur_msg_sz=0;
+
 				if(dma_head < dma_tail)
 				{
 					for(register size_t i=dma_head; i<dma_tail; i++)
@@ -54,7 +55,13 @@ void GPSTask(void* arguments)
 						found = (found == 0 && gpsBuffer[i] == '\r') ? 1
 								: (found == 1 && gpsBuffer[i] == '\n') ? 2
 										: 0;
-						gpsMsg[cur_msg_sz++]= gpsBuffer[i];
+						gpsPaquet.msg[cur_msg_sz++]= gpsBuffer[i];
+						if(found==2)
+						{
+							osMessageQueuePut(mainNmeaQueueHandle, &gpsPaquet,0,0);
+							memset(gpsPaquet.msg,0,PARSER_MESSAGE_SIZE);
+							cur_msg_sz=0;
+						}
 					}
 
 				}
@@ -65,7 +72,13 @@ void GPSTask(void* arguments)
 						found = (found == 0 && gpsBuffer[i] == '\r') ? 1
 								: (found == 1 && gpsBuffer[i] == '\n') ? 2
 										: 0;
-						gpsMsg[cur_msg_sz++]= gpsBuffer[i];
+						gpsPaquet.msg[cur_msg_sz++]= gpsBuffer[i];
+						if(found==2)
+						{
+							osMessageQueuePut(mainNmeaQueueHandle, &gpsPaquet,0,0);
+							memset(gpsPaquet.msg,0,PARSER_MESSAGE_SIZE);
+							cur_msg_sz=0;
+						}
 					}
 
 					for(register size_t i=0; i<dma_tail; i++)
@@ -73,24 +86,19 @@ void GPSTask(void* arguments)
 						found = (found == 0 && gpsBuffer[i] == '\r') ? 1
 								: (found == 1 && gpsBuffer[i] == '\n') ? 2
 										: 0;
-						gpsMsg[cur_msg_sz++]= gpsBuffer[i];
+						gpsPaquet.msg[cur_msg_sz++]= gpsBuffer[i];
+						if(found==2)
+						{
+							osMessageQueuePut(mainNmeaQueueHandle, &gpsPaquet,0,0);
+							memset(gpsPaquet.msg,0,PARSER_MESSAGE_SIZE);
+							cur_msg_sz=0;
+						}
 					}
 
 				}
 
 				dma_head=dma_tail;
 
-
-				switch (osMessageQueuePut(mainNmeaQueueHandle, &gpsMsg,0,0)) {
-				case osErrorTimeout:
-					__asm("BKPT #0\n") ; // Break into the debugger
-					break;
-				case osErrorResource:
-					__asm("BKPT #0\n") ; // Break into the debugger
-					break;
-				default:
-					break;
-				}
 
 			}
 		}while(dma_head!=(UART_DMA_BUFFER_SIZE- huart1.hdmarx->Instance->CNDTR));
