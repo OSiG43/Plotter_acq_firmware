@@ -147,7 +147,7 @@ standard names. */
 /* IMPORTANT: This define is commented when used with STM32Cube firmware, when the timebase source is SysTick,
               to prevent overwriting SysTick_Handler defined within STM32Cube HAL */
 
-//#define xPortSysTickHandler SysTick_Handler 		//ATTENTION !!!!!!!!! A ETE COMMENTER POUR TRACE ANALYZER error: multiple declaration of SysTick_Handler. ATTENTION !IL SAGIT D'UN BIDOULLAGE!!!
+#define xPortSysTickHandler SysTick_Handler 		//ATTENTION !!!!!!!!! A ETE COMMENTER POUR TRACE ANALYZER error: multiple declaration of SysTick_Handler. ATTENTION !IL SAGIT D'UN BIDOULLAGE!!!
 
 /* USER CODE BEGIN 2 */    
 /* Definitions needed when configGENERATE_RUN_TIME_STATS is on */
@@ -160,15 +160,5 @@ standard names. */
 /* USER CODE END Defines */ 
 
 /* IAR Embedded Workbench */
-#ifndef __IASMARM__
-	#if ( configUSE_TRACE_FACILITY == 1 )
-		#include "trcRecorder.h"
-	#endif
-#endif
-#ifndef __LANGUAGE_ASSEMBLY
-	#if ( configUSE_TRACE_FACILITY == 1 )
-		#include "trcRecorder.h"
-	#endif
-#endif
 
 #endif /* FREERTOS_CONFIG_H */
