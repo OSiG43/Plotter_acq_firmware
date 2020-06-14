@@ -75,8 +75,16 @@ const osThreadAttr_t defaultTask_attributes = {
 
 osThreadId_t otherTaskHandle;
 osMessageQueueId_t mainNmeaQueueHandle;
+osMessageQueueId_t vhfNmeaQueueHandle;
+osMessageQueueId_t pilotNmeaQueueHandle;
 const osMessageQueueAttr_t mainNmeaQueue_attributes = {
 		.name = "mainNmeaQueue"
+};
+const osMessageQueueAttr_t vhfNmeaQueue_attributes = {
+		.name = "vhfNmeaQueue"
+};
+const osMessageQueueAttr_t pilotNmeaQueue_attributes = {
+		.name = "pilotNmeaQueue"
 };
 
 //classic attribute for uartParser
@@ -170,7 +178,9 @@ int main(void)
   /* USER CODE BEGIN RTOS_QUEUES */
 
 	/* creation of mainNmeaQueue */
-	mainNmeaQueueHandle = osMessageQueueNew (16, sizeof(uint8_t[PARSER_MESSAGE_SIZE]), &mainNmeaQueue_attributes);
+	mainNmeaQueueHandle = osMessageQueueNew (16, sizeof(NMEA_PAQUET), &mainNmeaQueue_attributes);
+	vhfNmeaQueueHandle = osMessageQueueNew (8, sizeof(NMEA_PAQUET), &vhfNmeaQueue_attributes);
+	pilotNmeaQueueHandle = osMessageQueueNew (8, sizeof(NMEA_PAQUET), &pilotNmeaQueue_attributes);
 
   /* USER CODE END RTOS_QUEUES */
 
@@ -556,8 +566,7 @@ void StartDefaultTask(void *argument)
   /* USER CODE BEGIN 5 */
 	printf("Kernel initialized.\r\n");
 	NMEA_PAQUET paquet;
-	int i =0;
-	uint8_t letter=0;
+
 	/* Infinite loop */
 	for(;;)
 	{

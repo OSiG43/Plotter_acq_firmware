@@ -9,6 +9,8 @@
 #define SHARED_H_
 
 extern osMessageQueueId_t mainNmeaQueueHandle;
+extern osMessageQueueId_t vhfNmeaQueueHandle;
+extern osMessageQueueId_t pilotNmeaQueueHandle;
 
 
 #endif /* SHARED_H_ */

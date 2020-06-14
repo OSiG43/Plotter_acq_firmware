@@ -12,6 +12,7 @@
 #include "string.h"
 #include <stdio.h>
 #include "Constants.h"
+#include "parser.h"
 
 #define IDLE_TIME 25 //time between 2 frames in ticks number
 

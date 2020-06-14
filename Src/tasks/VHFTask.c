@@ -29,6 +29,9 @@ void VHFTask(void* arguments)
 	size_t dma_head = 0, dma_tail = 0;
 	size_t cur_msg_sz = 0;
 	uint8_t found = 0;
+
+	NMEA_PAQUET sendingPaquet;
+
 	NMEA_PAQUET vhfPaquet;
 	memset(vhfPaquet.msg,0,PARSER_MESSAGE_SIZE);
 
@@ -59,7 +62,7 @@ void VHFTask(void* arguments)
 						vhfPaquet.msg[cur_msg_sz++]= vhfBuffer[i];
 						if(found==2)
 						{
-							osMessageQueuePut(mainNmeaQueueHandle, &vhfPaquet,0,0);
+							sendNparsePaquet(vhfPaquet,VHF);
 							memset(vhfPaquet.msg,0,PARSER_MESSAGE_SIZE);
 							cur_msg_sz=0;
 						}
@@ -78,7 +81,7 @@ void VHFTask(void* arguments)
 						vhfPaquet.msg[cur_msg_sz++]= vhfBuffer[i];
 						if(found==2)
 						{
-							osMessageQueuePut(mainNmeaQueueHandle, &vhfPaquet,0,0);
+							sendNparsePaquet(vhfPaquet,VHF);
 							memset(vhfPaquet.msg,0,PARSER_MESSAGE_SIZE);
 							cur_msg_sz=0;
 						}
@@ -92,7 +95,7 @@ void VHFTask(void* arguments)
 						vhfPaquet.msg[cur_msg_sz++]= vhfBuffer[i];
 						if(found==2)
 						{
-							osMessageQueuePut(mainNmeaQueueHandle, &vhfPaquet,0,0);
+							sendNparsePaquet(vhfPaquet,VHF);
 							memset(vhfPaquet.msg,0,PARSER_MESSAGE_SIZE);
 							cur_msg_sz=0;
 						}
@@ -104,6 +107,22 @@ void VHFTask(void* arguments)
 
 			}
 		}while(dma_head!=(UART_DMA_BUFFER_SIZE- huart2.hdmarx->Instance->CNDTR));
+
+		//Sendind sentences to vhf
+		if(osMessageQueueGet(vhfNmeaQueueHandle,&sendingPaquet,NULL,2)==osOK){
+			switch (HAL_UART_Transmit_DMA(&huart2,sendingPaquet.msg,60)) {
+				case HAL_DMA_STATE_BUSY:
+					__asm("BKPT #0\n") ; // Break into the debugger
+					break;
+				case HAL_OK:
+					__asm("BKPT #0\n") ; // Break into the debugger
+					break;
+				default:
+					break;
+			}
+
+		}
+
 		osDelay(IDLE_TIME); // this should be the minimum time difference between each frame
 	}
 }

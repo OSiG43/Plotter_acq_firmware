@@ -58,7 +58,7 @@ void WITask(void* arguments)
 						wiPaquet.msg[cur_msg_sz++]= wiBuffer[i];
 						if(found==2)
 						{
-							osMessageQueuePut(mainNmeaQueueHandle, &wiPaquet,0,0);
+							sendNparsePaquet(wiPaquet, WI);
 							memset(wiPaquet.msg,0,PARSER_MESSAGE_SIZE);
 							cur_msg_sz=0;
 						}
@@ -75,7 +75,7 @@ void WITask(void* arguments)
 						wiPaquet.msg[cur_msg_sz++]= wiBuffer[i];
 						if(found==2)
 						{
-							osMessageQueuePut(mainNmeaQueueHandle, &wiPaquet,0,0);
+							sendNparsePaquet(wiPaquet, WI);
 							memset(wiPaquet.msg,0,PARSER_MESSAGE_SIZE);
 							cur_msg_sz=0;
 						}
@@ -89,7 +89,7 @@ void WITask(void* arguments)
 						wiPaquet.msg[cur_msg_sz++]= wiBuffer[i];
 						if(found==2)
 						{
-							osMessageQueuePut(mainNmeaQueueHandle, &wiPaquet,0,0);
+							sendNparsePaquet(wiPaquet, WI);
 							memset(wiPaquet.msg,0,PARSER_MESSAGE_SIZE);
 							cur_msg_sz=0;
 						}

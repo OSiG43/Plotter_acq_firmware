@@ -58,7 +58,7 @@ void GPSTask(void* arguments)
 						gpsPaquet.msg[cur_msg_sz++]= gpsBuffer[i];
 						if(found==2)
 						{
-							osMessageQueuePut(mainNmeaQueueHandle, &gpsPaquet,0,0);
+							sendNparsePaquet(gpsPaquet,GPS);
 							memset(gpsPaquet.msg,0,PARSER_MESSAGE_SIZE);
 							cur_msg_sz=0;
 						}
@@ -75,7 +75,7 @@ void GPSTask(void* arguments)
 						gpsPaquet.msg[cur_msg_sz++]= gpsBuffer[i];
 						if(found==2)
 						{
-							osMessageQueuePut(mainNmeaQueueHandle, &gpsPaquet,0,0);
+							sendNparsePaquet(gpsPaquet,GPS);
 							memset(gpsPaquet.msg,0,PARSER_MESSAGE_SIZE);
 							cur_msg_sz=0;
 						}
@@ -89,7 +89,7 @@ void GPSTask(void* arguments)
 						gpsPaquet.msg[cur_msg_sz++]= gpsBuffer[i];
 						if(found==2)
 						{
-							osMessageQueuePut(mainNmeaQueueHandle, &gpsPaquet,0,0);
+							sendNparsePaquet(gpsPaquet,GPS);
 							memset(gpsPaquet.msg,0,PARSER_MESSAGE_SIZE);
 							cur_msg_sz=0;
 						}
