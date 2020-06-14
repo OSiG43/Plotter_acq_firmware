@@ -29,7 +29,7 @@ enum NMEAHANDLER_ENUM{
 	WI
 };
 
-#define DEFAULT_UART_TASK_STACK_SIZE 128*4
+#define DEFAULT_UART_TASK_STACK_SIZE 192*4
 #define DEFAULT_UART_TASK_PRIORITY osPriorityNormal
 
 //Concerning peripheral

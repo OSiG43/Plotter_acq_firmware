@@ -110,16 +110,18 @@ void VHFTask(void* arguments)
 
 		//Sendind sentences to vhf
 		if(osMessageQueueGet(vhfNmeaQueueHandle,&sendingPaquet,NULL,2)==osOK){
-			switch (HAL_UART_Transmit_DMA(&huart2,sendingPaquet.msg,60)) {
-				case HAL_DMA_STATE_BUSY:
-					__asm("BKPT #0\n") ; // Break into the debugger
-					break;
-				case HAL_OK:
-					__asm("BKPT #0\n") ; // Break into the debugger
-					break;
-				default:
-					break;
-			}
+			HAL_UART_Transmit_DMA(&huart2,sendingPaquet.msg,90);
+			//HAL_UART_Transmit(&huart2,sendingPaquet.msg,90,0U);
+//			switch (HAL_UART_Transmit_DMA(&huart2,sendingPaquet.msg,60)) {
+//				case HAL_DMA_STATE_BUSY:
+////					__asm("BKPT #0\n") ; // Break into the debugger
+//					break;
+//				case HAL_OK:
+////					__asm("BKPT #0\n") ; // Break into the debugger
+//					break;
+//				default:
+//					break;
+//			}
 
 		}
 

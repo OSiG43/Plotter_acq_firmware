@@ -1,6 +1,7 @@
 #MicroXplorer Configuration settings - do not modify
 Mcu.Family=STM32F1
 Dma.USART3_RX.6.Instance=DMA1_Channel3
+NVIC.USART3_IRQn=true\:5\:0\:false\:false\:true\:true\:true\:true
 ProjectManager.MainLocation=Src
 RCC.MCOFreq_Value=24000000
 Dma.UART4_TX.5.Instance=DMA2_Channel5
@@ -159,6 +160,7 @@ Dma.USART3_RX.6.PeriphInc=DMA_PINC_DISABLE
 Dma.USART1_TX.3.RequestParameters=Instance,Direction,PeriphInc,MemInc,PeriphDataAlignment,MemDataAlignment,Mode,Priority
 Dma.USART1_RX.2.PeriphInc=DMA_PINC_DISABLE
 Dma.UART4_RX.4.MemInc=DMA_MINC_ENABLE
+NVIC.USART2_IRQn=true\:5\:0\:false\:false\:true\:true\:true\:true
 Dma.UART4_TX.5.RequestParameters=Instance,Direction,PeriphInc,MemInc,PeriphDataAlignment,MemDataAlignment,Mode,Priority
 RCC.FamilyName=M
 RCC.I2S3Freq_Value=24000000
