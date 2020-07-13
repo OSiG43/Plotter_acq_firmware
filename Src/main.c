@@ -153,9 +153,34 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
   MX_USART3_UART_Init();
+
   /* USER CODE BEGIN 2 */
 
 	printf("Initializing freeRtos and freeRtos's objects...\r\n");
+
+	printf("Scanning I2C bus:\r\n");
+	HAL_StatusTypeDef result;
+	uint8_t i;
+	for (i=1; i<128; i++)
+	{
+		/*
+		 * the HAL wants a left aligned i2c address
+		 * &hi2c1 is the handle
+		 * (uint16_t)(i<<1) is the i2c address left aligned
+		 * retries 2
+		 * timeout 2
+		 */
+		result = HAL_I2C_IsDeviceReady(&hi2c1, (uint16_t)(i<<1), 2, 2);
+		if (result != HAL_OK) // HAL_ERROR or HAL_BUSY or HAL_TIMEOUT
+		{
+			printf("."); // No ACK received at that address
+		}
+		if (result == HAL_OK)
+		{
+			printf("0x%X", i); // Received an ACK at that address
+		}
+	}
+	printf("\r\n");
 
   /* USER CODE END 2 */
 
@@ -194,6 +219,7 @@ int main(void)
 	initGPSTask();
 	initWITask();
 	initPilotTask();
+	initScreenTask();
 
   /* USER CODE END RTOS_THREADS */
 
@@ -265,7 +291,7 @@ static void MX_I2C1_Init(void)
 
   /* USER CODE END I2C1_Init 1 */
   hi2c1.Instance = I2C1;
-  hi2c1.Init.ClockSpeed = 100000;
+  hi2c1.Init.ClockSpeed = 400000;
   hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
   hi2c1.Init.OwnAddress1 = 0;
   hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
@@ -528,10 +554,10 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pins : PB0 PB1 PB2 PB12 
                            PB13 PB14 PB15 PB3 
-                           PB8 PB9 */
+                           PB6 PB7 */
   GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_12 
                           |GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15|GPIO_PIN_3 
-                          |GPIO_PIN_8|GPIO_PIN_9;
+                          |GPIO_PIN_6|GPIO_PIN_7;
   GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 

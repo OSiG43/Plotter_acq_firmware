@@ -12,6 +12,7 @@
 #include "VHFTask.h"
 #include "PilotTask.h"
 #include "WITask.h"
+#include "screenTask.h"
 
 
 #endif /* INC_ALLTASKS_H_ */
